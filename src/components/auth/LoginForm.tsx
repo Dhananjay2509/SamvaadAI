@@ -1,7 +1,9 @@
 "use client";
+import { apiRequest } from "@/lib/api-client";
+import { AuthResponse } from "@/types/auth";
 import { useState } from "react";
 
-export default function Login() {
+export default function LoginForm() {
   const [formData, setFormData] = useState({ identifier: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -21,7 +23,13 @@ export default function Login() {
     if (isSubmitting) return;
     setIsSubmitting(true);
     try {
-      console.log("Login form submitted", { ...formData, rememberMe });
+      const data = await apiRequest<AuthResponse>("/login", {
+        method: "POST",
+        body: JSON.stringify(formData),
+      })
+      console.log("Login success");
+    } catch(error){
+        console.log("Login failed", error);
     } finally {
       setIsSubmitting(false);
     }
