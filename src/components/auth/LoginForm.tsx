@@ -1,9 +1,12 @@
 "use client";
 import { apiRequest } from "@/lib/api-client";
 import { AuthResponse } from "@/types/auth";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginForm() {
+  const router = useRouter();
   const [formData, setFormData] = useState({ identifier: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -26,10 +29,11 @@ export default function LoginForm() {
       const data = await apiRequest<AuthResponse>("/login", {
         method: "POST",
         body: JSON.stringify(formData),
-      })
+      });
       console.log("Login success");
-    } catch(error){
-        console.log("Login failed", error);
+      router.push("samvaadAI/dashboard");
+    } catch (error) {
+      console.log("Login failed", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -182,12 +186,12 @@ export default function LoginForm() {
 
             <p className="text-center text-sm text-zinc-600 dark:text-zinc-400">
               New here?{" "}
-              <button
-                type="button"
+              <Link
+                href="/signup"
                 className="font-medium text-zinc-900 underline underline-offset-4 decoration-zinc-300 hover:decoration-zinc-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/40 dark:text-zinc-100 dark:decoration-white/20"
               >
                 Create an account
-              </button>
+              </Link>
             </p>
           </form>
         </div>
