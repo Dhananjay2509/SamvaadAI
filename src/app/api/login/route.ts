@@ -5,7 +5,8 @@ import jwt from "jsonwebtoken";
 
 export async function POST(request: Request) {
   try {
-    const { identifier, password } = await request.json();
+    const { identifier, password, rememberMe } = await request.json();
+    const expiry = rememberMe? "7d" : "1h";
 
     // 1. Find user by email OR username
     const user = await prisma.user.findFirst({
@@ -30,13 +31,12 @@ export async function POST(request: Request) {
       },
       process.env.JWT_SECRET!,
       {
-        expiresIn: "7d",
+        expiresIn: expiry,
       },
     );
 
     // 2. Check Password
     const isPasswordValid = await bcrypt.compare(password, user.password);
-    console.log("isvalid", isPasswordValid);
 
     if (!isPasswordValid) {
       return NextResponse.json(
@@ -70,7 +70,7 @@ export async function POST(request: Request) {
     response.cookies.set("token", token, {
       httpOnly: true,
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60,
+      maxAge: rememberMe? 7 * 24 * 60 * 60: 60 * 60,
       path: "/",
     });
 

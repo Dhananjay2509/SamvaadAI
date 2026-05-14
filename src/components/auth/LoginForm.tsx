@@ -28,7 +28,7 @@ export default function LoginForm() {
     try {
       const data = await apiRequest<AuthResponse>("/login", {
         method: "POST",
-        body: JSON.stringify(formData),
+        body: JSON.stringify({...formData, rememberMe}),  
       });
       console.log("Login success");
       router.push("samvaadAI/dashboard");
