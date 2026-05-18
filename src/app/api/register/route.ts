@@ -52,7 +52,7 @@ export async function POST(request: Request) {
         token,
         user: {
           id: newUser.id,
-          username: newUser,
+          username: newUser.username,
           email: newUser.email,
         },
       },

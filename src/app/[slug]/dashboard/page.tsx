@@ -1,9 +1,9 @@
 "use client";
 
 const railItems = [
-  { label: "All chats", icon: "C", count: 43, active: false },
-  { label: "Work", icon: "W", count: 4, active: true },
-  { label: "Friends", icon: "F", active: false },
+  { label: "All chats", icon: "C", count: 43, active: true },
+  { label: "Work", icon: "W", count: 4, active: false },
+  { label: "Groups", icon: "G", active: false },
   { label: "News", icon: "N", active: false },
   { label: "Archive", icon: "A", active: false },
 ];
